@@ -6,29 +6,37 @@
 //
 
 import UIKit
+import Firebase
 
 class ChatViewController: UIViewController {
-
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTF: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        //        title = ชื่อของหน้านี้ที่มันอยู่บนแถบ nav นั่นแหละที่มันอยู่ตรงกลางน่ะ ลองรันดูละกัน
+        title = "⚡️FlashChat"
+        
+        
+        //        ก็คือให้มันซ่อนปุ่ม กลับ นั่นแหละเพราะว่าถ้าล็อคอินเข้ามาแล้วมันก็ไม่ควรที่จะกลับไปหน้า login ได้แล้ว
+        navigationItem.hidesBackButton = true
     }
     
     @IBAction func sendPressed(_ sender: UIButton) {
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    @IBAction func logOutPressed(_ sender: UIBarButtonItem) {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            //            คือ view มันทับซ้อน ๆ กันยุอะนะถ้ากลับไปทีละตัวมันจะลำบาก ดังนั้นก็จะใช้ method นี้เพื่ือให้มันกลับไปหน้าแรกเลย
+            navigationController?.popToRootViewController(animated: true)
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
     }
-    */
-
+    
 }
