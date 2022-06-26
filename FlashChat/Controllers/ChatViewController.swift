@@ -13,15 +13,22 @@ class ChatViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTF: UITextField!
     
+    var messages:[Message] = [
+        Message(sender: "1@2.com", body: "Hey!"),
+        Message(sender: "a@b.com", body: "Hello!"),
+        Message(sender: "1@2.com", body: "What's up?")
+    ]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         //        title = ชื่อของหน้านี้ที่มันอยู่บนแถบ nav นั่นแหละที่มันอยู่ตรงกลางน่ะ ลองรันดูละกัน
         title = Const.appName
         
-        
         //        ก็คือให้มันซ่อนปุ่ม กลับ นั่นแหละเพราะว่าถ้าล็อคอินเข้ามาแล้วมันก็ไม่ควรที่จะกลับไปหน้า login ได้แล้ว
         navigationItem.hidesBackButton = true
+
+        tableView.dataSource = self
     }
     
     @IBAction func sendPressed(_ sender: UIButton) {
@@ -39,4 +46,21 @@ class ChatViewController: UIViewController {
         }
     }
     
+}
+
+// เราจะเอาข้อมูลไปแสดงผลในตารางแหละ
+extension ChatViewController : UITableViewDataSource {
+    
+//    จำนวนแถวในตารางแหละ
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return messages.count
+    }
+    
+//
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        สร้าง cell 1 cell น่ะ
+        let cell = tableView.dequeueReusableCell(withIdentifier: Const.cellIdentifier, for: indexPath)
+        cell.textLabel!.text = "\(messages[indexPath.row].body)"
+        return cell
+    }
 }
