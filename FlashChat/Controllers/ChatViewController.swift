@@ -17,7 +17,7 @@ class ChatViewController: UIViewController {
         super.viewDidLoad()
         
         //        title = ชื่อของหน้านี้ที่มันอยู่บนแถบ nav นั่นแหละที่มันอยู่ตรงกลางน่ะ ลองรันดูละกัน
-        title = "⚡️FlashChat"
+        title = Const.appName
         
         
         //        ก็คือให้มันซ่อนปุ่ม กลับ นั่นแหละเพราะว่าถ้าล็อคอินเข้ามาแล้วมันก็ไม่ควรที่จะกลับไปหน้า login ได้แล้ว

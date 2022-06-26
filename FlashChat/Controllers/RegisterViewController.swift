@@ -40,7 +40,7 @@ class RegisterViewController: UIViewController {
             } else {
                 //            if register success
                 //            Navigate to the ChatViewController
-                self.performSegue(withIdentifier: Constants.registerSegue, sender: self)
+                self.performSegue(withIdentifier: Const.registerSegue, sender: self)
             }
         }
         
