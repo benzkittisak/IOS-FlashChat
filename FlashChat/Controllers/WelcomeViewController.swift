@@ -30,8 +30,7 @@ class WelcomeViewController: UIViewController {
 //            charIndex += 1
 //        }
         
-        
-//        ติดตั้ง dependency เพิ่มชื่อ CLTypingLabell ผ่าน cocoapod เราก็ไม่ต้องมาทำอะไรแบบข้างบนอีก เรียกใช้แบบข้างล่างได้เลย
+//        หรือจะติดตั้ง dependency เพิ่มชื่อ CLTypingLabel ผ่าน cocoapod เราก็ไม่ต้องมาทำอะไรแบบข้างบนอีก เรียกใช้แบบข้างล่างได้เลย
         titleLB.text = "⚡️FlashChat"
     }
     
