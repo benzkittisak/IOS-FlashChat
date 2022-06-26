@@ -29,6 +29,9 @@ class ChatViewController: UIViewController {
         navigationItem.hidesBackButton = true
 
         tableView.dataSource = self
+        
+//        ใช้ตัว cell ที่เราสร้างขึ้นมาเอง
+        tableView.register(UINib.init(nibName: Const.cellNibName, bundle: nil), forCellReuseIdentifier: Const.cellIdentifier)
     }
     
     @IBAction func sendPressed(_ sender: UIButton) {
@@ -59,8 +62,8 @@ extension ChatViewController : UITableViewDataSource {
 //
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 //        สร้าง cell 1 cell น่ะ
-        let cell = tableView.dequeueReusableCell(withIdentifier: Const.cellIdentifier, for: indexPath)
-        cell.textLabel!.text = "\(messages[indexPath.row].body)"
+        let cell = tableView.dequeueReusableCell(withIdentifier: Const.cellIdentifier, for: indexPath) as! MessageCell
+        cell.lable.text = "\(messages[indexPath.row].body)"
         return cell
     }
 }
