@@ -5,5 +5,5 @@ target 'FlashChat' do
   use_frameworks!
 
   # Pods for FlashChat
-    pod 'CLTypingLabel'
+    pod 'CLTypingLabel' , '~> 0.4.0'
 end
