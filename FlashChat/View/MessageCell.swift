@@ -14,13 +14,14 @@ class MessageCell: UITableViewCell {
     @IBOutlet weak var lable: UILabel!
     
     @IBOutlet weak var rightIV: UIImageView!
+    @IBOutlet weak var leftIV: UIImageView!
     
 //    เหมือนกับตัว didLoad แหละ มันจะถูกเรียกอัตโนมัติเมื่่อมีการเรียกใช้ MessageCell
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
         
-        messageBubble.layer.cornerRadius = messageBubble.frame.height / 5
+        messageBubble.layer.cornerRadius = messageBubble.frame.height / 4
         
     }
 

@@ -13,6 +13,19 @@ class WelcomeViewController: UIViewController {
 
     @IBOutlet weak var titleLB: CLTypingLabel!
     
+//    เปิดแอปมาให้มันปิดตัว navigation bar ออกไปก่อน
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    
+//    พอเปิดเสร็จก้ให้มันยกเลิกการซ่อนเพราะว่าหน้าอื่นจะได้มี navbar
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.isNavigationBarHidden = false
+    }
+    
     override func viewDidLoad() {
     
         super.viewDidLoad()

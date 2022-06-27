@@ -64,6 +64,9 @@ class ChatViewController: UIViewController {
                     
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
+//                        เวลามีแชทใหม่ก้คือให้มันเลื่อนลงล่างสุดให้อัตโนมัติอะนะ
+                        let indexPath = IndexPath(row: self.messages.count - 1 , section: 0)
+                        self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
                     }
                     
                 }
@@ -91,7 +94,10 @@ class ChatViewController: UIViewController {
             if let err = error {
                 print("There was an issue saving data to firestore . \(err)")
             } else {
-                self.messageTF.text = ""
+                
+                DispatchQueue.main.async {
+                    self.messageTF.text = ""
+                }
                 print("Successfully added data")
             }
         })
@@ -124,7 +130,23 @@ extension ChatViewController : UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         //        สร้าง cell 1 cell น่ะ
         let cell = tableView.dequeueReusableCell(withIdentifier: Const.cellIdentifier, for: indexPath) as! MessageCell
-        cell.lable.text = "\(messages[indexPath.row].body)"
+        
+//        ต่อไปจะทำให้มันแยกว่าอันนี้ใครเป็นคนส่งแชทมา
+        let message = messages[indexPath.row]
+        cell.lable.text = "\(message.body)"
+//        ถ้าชื่อคนส่งตรงกับชื่อของคนท่ี login เข้ามา
+        if message.sender == Auth.auth().currentUser?.email {
+            cell.leftIV.isHidden = true
+            cell.rightIV.isHidden = false
+            cell.messageBubble.backgroundColor = UIColor(named: Const.BrandColors.lightPurple)
+            cell.lable.textColor = UIColor(named: Const.BrandColors.purple)
+        } else {
+            cell.rightIV.isHidden = true
+            cell.leftIV.isHidden = false
+            cell.messageBubble.backgroundColor = UIColor(named: Const.BrandColors.purple)
+            cell.lable.textColor = UIColor(named: Const.BrandColors.lightPurple)
+        }
+        
         return cell
     }
 }
