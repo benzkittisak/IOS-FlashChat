@@ -12,4 +12,5 @@ struct Message {
     let sender:String
 //   ข้อความที่ส่งมาน่ะ
     let body:String
+    
 }

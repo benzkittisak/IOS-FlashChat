@@ -32,20 +32,24 @@ class ChatViewController: UIViewController {
         //        ใช้ตัว cell ที่เราสร้างขึ้นมาเอง
         tableView.register(UINib.init(nibName: Const.cellNibName, bundle: nil), forCellReuseIdentifier: Const.cellIdentifier)
         
-//        เมื่อหน้าแชทโหลดขึ้นมาเราก็จะให้มันเรียกใช้ฟังก์ชันนี้เพื่อไปดึงข้อมูลแชทจาก firebase มา
+        //        เมื่อหน้าแชทโหลดขึ้นมาเราก็จะให้มันเรียกใช้ฟังก์ชันนี้เพื่อไปดึงข้อมูลแชทจาก firebase มา
         loadMessage()
     }
     
     
     func loadMessage() {
-        messages = []
         
-//        อ่านข้อมูลจาก firestore
-        db.collection(Const.FStore.collectionName).getDocuments { querySnapshot, error in
+        
+        //        อ่านข้อมูลจาก firestore
+//        เพิ่ม addSnapshotListener เพื่อเวลาที่ firestore มีการเปลี่ยนแปลงให้มันเรียกใช้ฟังก์ชันนี้ใหม่อีกครั้ง
+        db.collection(Const.FStore.collectionName)
+            .order(by: Const.FStore.dateField)
+            .addSnapshotListener { querySnapshot, error in
+            self.messages = []
             if let err = error {
                 print("There was an issue retrieving messsage from firestore , \(err)")
             } else {
-//                querySnapshot มันเป็น array แหละมั่ง ลืมแฮะ
+                //                querySnapshot มันเป็น array แหละมั่ง ลืมแฮะ
                 for document in querySnapshot!.documents {
                     let data = document.data()
                     
@@ -55,7 +59,13 @@ class ChatViewController: UIViewController {
                     guard let messageBody = data[Const.FStore.bodyField] as? String else { return print("Error the message body from firestore is nil") }
                     
                     let newMessage = Message(sender: messageSender, body: messageBody)
+                    
                     self.messages.append(newMessage)
+                    
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                    
                 }
             }
         }
@@ -69,16 +79,19 @@ class ChatViewController: UIViewController {
         //        เอา email ของคนที่กำลัง login เข้ามาอยู่
         guard let messageSender = Auth.auth().currentUser?.email else { return print("Error sender is empty or nil") }
         
-
+        
         var ref:DocumentReference? = nil
         //        ต่อไปจะทำการเลือก collection มาใช้แหละ ซึ่งเราจะใช้ชื่อ collection ว่า message
-        ref = db.collection(Const.FStore.collectionName).addDocument(data: [
+        ref = db.collection(Const.FStore.collectionName)
+            .addDocument(data: [
             Const.FStore.senderField:messageSender,
-            Const.FStore.bodyField:messageBody
+            Const.FStore.bodyField:messageBody,
+            Const.FStore.dateField:Date().timeIntervalSince1970
         ], completion: { error in
             if let err = error {
                 print("There was an issue saving data to firestore . \(err)")
             } else {
+                self.messageTF.text = ""
                 print("Successfully added data")
             }
         })
